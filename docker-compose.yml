@@ -1,0 +1,19 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "57017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=bilabor
+      - MONGO_INITDB_ROOT_PASSWORD=bilabor
+      - MONGO_INITDB_DATABASE=bilabor
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  redis:
+    image: redis
+    restart: always
+    command: redis-server --requirepass bilabor
+    ports:
+      - "56379:6379"

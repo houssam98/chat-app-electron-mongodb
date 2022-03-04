@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="fill-vertical" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat application</title>
+
+    <!-- Import Bootstrap-->
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/font-awesome/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="chat.css" />
+  </head>
+  <body class="fill-vertical">
+    <!-- Login screen -->
+    <div id="login-window" class="container login-window">
+      <div class="jumbotron">
+        <h1>BI Laboratory NoSQL Chat application</h1>
+        <p>
+          Welcome to the Chat application of BI Laboratory course, demonstrating
+          the functions of NoSQL databases and giving an introduction into
+          Electron.
+        </p>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-fw fa-user"></i></span>
+        </div>
+        <input
+          id="usernameInput"
+          type="text"
+          class="form-control"
+          placeholder="Username"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-fw fa-link"></i></span>
+        </div>
+        <input
+          id="avatarUrlInput"
+          type="text"
+          class="form-control"
+          placeholder="Avatar URL"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"
+            ><i class="fa fa-fw fa-server"></i
+          ></span>
+        </div>
+        <input
+          id="serverInput"
+          type="text"
+          class="form-control"
+          placeholder="Server IP"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-fw fa-key"></i></span>
+        </div>
+        <input
+          id="passwordInput"
+          type="text"
+          class="form-control"
+          placeholder="Server password"
+        />
+      </div>
+      <div class="text-center">
+        <button class="btn btn-primary" onclick="chatController.login()">
+          <i class="fa fa-fw fa-sign-in"></i>Login
+        </button>
+      </div>
+    </div>
+    <!-- Chat screen -->
+    <div
+      id="main-window"
+      class="container-fluid p-0 app-window"
+      style="display: none"
+    >
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand navbar-dark bg-dark chat-nav">
+        <a class="navbar-brand" href="#">
+          <img
+            src="assets/logo.png"
+            width="100"
+            height="36"
+            alt="BME Aut"
+            class="d-inline-block align-top"
+          />
+          <span class="align-middle">BI NoSQL Labor Chat application</span>
+        </a>
+      </nav>
+
+      <!-- Chat area -->
+      <div class="row chat-body">
+        <!-- Users column -->
+        <div class="col-md-4">
+          <div class="selector-panel">
+            <div class="selector-panel-header">
+              <span id="username"></span>
+            </div>
+            <div class="selector-panel-body">
+              <b>Rooms</b>
+              <ul id="room-list">
+                <li
+                  class="selector-panel-item"
+                  onclick="chatController.changeRoom('default')"
+                >
+                  General
+                </li>
+              </ul>
+
+              <b>Users</b>
+              <ul id="user-list">
+                <!-- Here comes the users list -->
+              </ul>
+
+              <div class="input-group mb-3">
+                <input
+                  id="roomNameInput"
+                  type="text"
+                  class="form-control"
+                  placeholder="Add room"
+                  aria-label="Add room"
+                  aria-describedby="basic-addon2"
+                />
+                <div
+                  class="input-group-append"
+                  onclick="chatController.createRoom()"
+                >
+                  <span class="input-group-text"
+                    ><i class="fa fa-fw fa-plus"></i
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Middle strip (messages + writing message) -->
+        <div class="col-md-8 messages-panel">
+          <!-- History of messages in the room -->
+          <div id="messages-panel" class="row messages-panel-history">
+            <div id="messages" class="messages">
+              <!-- Here comes the messages -->
+            </div>
+          </div>
+
+          <!-- Write new message -->
+          <div class="row messages-panel-new">
+            <div class="input-group">
+              <textarea
+                id="new-message-text"
+                class="form-control"
+                aria-label="With textarea"
+              ></textarea>
+              <div class="input-group-append">
+                <button
+                  class="btn btn-success"
+                  onclick="chatController.sendMessage()"
+                >
+                  Send <i class="fa fa-fw fa-send"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const chatController = require("./chat-controller.js");
+      const chatService = require("./chat-service.js");
+
+      window.onbeforeunload = function () {
+        chatService.disconnect();
+      };
+    </script>
+  </body>
+</html>
